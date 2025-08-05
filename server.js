@@ -6,6 +6,7 @@ import cors from "cors";
 import companyRouter from "./routes/company.routes.js";
 import vendorRouter from "./routes/vendor.routes.js";
 import loadTypeRouter from "./routes/loadType.routes.js";
+import paymentRouter from "./routes/payment.routes.js";
 
 dotenv.config();
 const app=express();
@@ -28,6 +29,9 @@ app.use("/api/vendor",vendorRouter);
 
 //load type routes
 app.use("/api/loadtype",loadTypeRouter);
+
+//payment routes
+app.use("/api/payments", paymentRouter);
 
 connect();
 app.listen(PORT,()=>{
