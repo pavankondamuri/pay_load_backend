@@ -18,8 +18,7 @@ const userSchema=new mongoose.Schema({
         ref:"Vendor",
     }],
     paymentHistory:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Payment",
+        type:String, // Store Razorpay payment IDs as strings
     }],
 },{timestamps:true});
 const user = mongoose.model("User",userSchema);

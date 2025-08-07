@@ -4,6 +4,9 @@ const paymentSchema = new mongoose.Schema({
   razorpay_payment_id: { type: String, required: true },
   razorpay_order_id: { type: String, required: true },
   vendorName: { type: String, required: true },
+  vendorId: { type: String, required: true },
+  companyName: { type: String, required: true },
+  companyId: { type: String, required: true },
   amount: { type: Number, required: true },
   status: { type: String, enum: ["Paid", "Pending", "Failed"], default: "Paid" },
   date: { type: Date, default: Date.now },
@@ -12,6 +15,8 @@ const paymentSchema = new mongoose.Schema({
   ifscCode: { type: String },
   vehicleNumbers: [{ type: String }],
   loadTypeId: { type: String },
+  loadTypeName: { type: String },
+  userId: { type: String }, // To track which user made the payment
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);

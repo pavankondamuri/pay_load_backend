@@ -22,8 +22,7 @@ const companySchema=new mongoose.Schema({
         default:"",
     },
     paymentHistory:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Payment",
+        type:String, // Store Razorpay payment IDs as strings
     }],
  
 },{timestamps:true});
