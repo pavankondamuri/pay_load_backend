@@ -130,6 +130,7 @@ export const getPaymentHistory = async (req, res) => {
       amountMax,
       vehicleNumber,
       loadTypeId,
+      globalSearch,
       page = 1,
       limit = 20
     } = req.query;
@@ -137,12 +138,27 @@ export const getPaymentHistory = async (req, res) => {
     // Build filter object
     const filter = {};
     
-    if (vendorName) {
-      filter.vendorName = { $regex: vendorName, $options: 'i' };
-    }
-    
-    if (companyName) {
-      filter.companyName = { $regex: companyName, $options: 'i' };
+    // Handle global search across multiple fields
+    if (globalSearch) {
+      filter.$or = [
+        { vendorName: { $regex: globalSearch, $options: 'i' } },
+        { companyName: { $regex: globalSearch, $options: 'i' } },
+        { vehicleNumbers: { $regex: globalSearch, $options: 'i' } },
+        { razorpay_payment_id: { $regex: globalSearch, $options: 'i' } }
+      ];
+    } else {
+      // Individual field filters
+      if (vendorName) {
+        filter.vendorName = { $regex: vendorName, $options: 'i' };
+      }
+      
+      if (companyName) {
+        filter.companyName = { $regex: companyName, $options: 'i' };
+      }
+      
+      if (vehicleNumber) {
+        filter.vehicleNumbers = { $regex: vehicleNumber, $options: 'i' };
+      }
     }
     
     if (status) {
@@ -152,10 +168,16 @@ export const getPaymentHistory = async (req, res) => {
     if (dateFrom || dateTo) {
       filter.date = {};
       if (dateFrom) {
-        filter.date.$gte = new Date(dateFrom);
+        // Set to start of day
+        const fromDate = new Date(dateFrom);
+        fromDate.setHours(0, 0, 0, 0);
+        filter.date.$gte = fromDate;
       }
       if (dateTo) {
-        filter.date.$lte = new Date(dateTo);
+        // Set to end of day
+        const toDate = new Date(dateTo);
+        toDate.setHours(23, 59, 59, 999);
+        filter.date.$lte = toDate;
       }
     }
     
@@ -167,10 +189,6 @@ export const getPaymentHistory = async (req, res) => {
       if (amountMax) {
         filter.amount.$lte = Number(amountMax);
       }
-    }
-    
-    if (vehicleNumber) {
-      filter.vehicleNumbers = { $regex: vehicleNumber, $options: 'i' };
     }
     
     if (loadTypeId) {
@@ -221,10 +239,16 @@ export const getPaymentStats = async (req, res) => {
     if (dateFrom || dateTo) {
       filter.date = {};
       if (dateFrom) {
-        filter.date.$gte = new Date(dateFrom);
+        // Set to start of day
+        const fromDate = new Date(dateFrom);
+        fromDate.setHours(0, 0, 0, 0);
+        filter.date.$gte = fromDate;
       }
       if (dateTo) {
-        filter.date.$lte = new Date(dateTo);
+        // Set to end of day
+        const toDate = new Date(dateTo);
+        toDate.setHours(23, 59, 59, 999);
+        filter.date.$lte = toDate;
       }
     }
     
