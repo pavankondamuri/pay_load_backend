@@ -34,6 +34,4 @@ app.use("/api/loadtype",loadTypeRouter);
 app.use("/api/payments", paymentRouter);
 
 connect();
-app.listen(PORT,()=>{
-    console.log(`Server is going to start on port http://localhost:${PORT}`);
-});
+export default app;
