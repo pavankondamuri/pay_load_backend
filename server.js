@@ -11,7 +11,12 @@ import paymentRouter from "./routes/payment.routes.js";
 dotenv.config();
 const app=express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin:"https://pay-load.vercel.app",
+        credentials:true
+    }
+));
 const PORT=process.env.PORT || 3000;
 
 app.get("/",(req,res)=>{
